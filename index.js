@@ -19,21 +19,12 @@ class Raptor {
       clientId: args[ 'client-id' ],
       host: args[ 'host-name' ],
       keyPath: `./${args[ 'private-key' ]}`,
-      /* milliseconds */
-      baseReconnectTimeMs: 4000,
-      /* seconds */
-      keepAlive: 300,
-      /* milliseconds */
-      delay: 4000,
-      Debug: false
     });
 
     this._subscribe( device );
   }
 
   _subscribe( device ) {
-    device.subscribe( 'topic_1' );
-    
     device.on( 'connect', () => {
       console.log( 'connect' );
       device.subscribe( 'topic_1' );
