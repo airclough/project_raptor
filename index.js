@@ -2,7 +2,14 @@ var awsIot = require( 'aws-iot-device-sdk' );
 var rpio = require( 'rpio' );
 
 class Raptor {
-  constructor() {
+  constructor( argv ) {
+    var args = {};
+    argv.forEach( ( arg ) => {
+      var [ prop, val ] = arg.split( '=' );
+
+      args[ prop ] = val;
+    });
+
     var device = this.device = awsIot.device({
       baseReconnectTimeMs: args.baseReconnectTimeMs,
       caPath: args.caCert,
@@ -52,4 +59,4 @@ class Raptor {
   }
 }
 
-new Raptor();
+new Raptor( process.argv.slice( 2 ) );
