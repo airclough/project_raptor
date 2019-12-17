@@ -10,6 +10,8 @@ class Raptor {
       args[ prop ] = val;
     });
 
+    console.log( args );
+
     var device = this.device = awsIot.device({
       baseReconnectTimeMs: args.baseReconnectTimeMs,
       caPath: args.caCert,
