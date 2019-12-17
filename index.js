@@ -14,7 +14,6 @@ class Raptor {
     console.log( args );
 
     var device = this.device = awsIot.device({
-      baseReconnectTimeMs: args.baseReconnectTimeMs,
       caPath: args[ 'ca-certificate' ],
       certPath: args[ 'client-certificate' ],
       clientId: args[ 'client-id' ],
