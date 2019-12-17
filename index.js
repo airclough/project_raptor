@@ -14,12 +14,11 @@ class Raptor {
     console.log( args );
 
     var device = this.device = awsIot.device({
-      caPath: args[ 'ca-certificate' ],
-      certPath: args[ 'client-certificate' ],
+      caPath: `../${args[ 'ca-certificate' ]}`,
+      certPath: `../${args[ 'client-certificate' ]}`,
       clientId: args[ 'client-id' ],
       host: args[ 'host-name' ],
-      keyPath: args[ 'private-key' ],
-      region: 'us-east-1'
+      keyPath: `../${args[ 'private-key' ]}`
     });
 
     this._subscribe( device );
