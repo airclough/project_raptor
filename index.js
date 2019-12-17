@@ -15,16 +15,12 @@ class Raptor {
 
     var device = this.device = awsIot.device({
       baseReconnectTimeMs: args.baseReconnectTimeMs,
-      caPath: args.caCert,
-      certPath: args.clientCert,
-      clientId: args.clientId,
-      debug: args.Debug,
-      host: args.Host,
-      keepalive: args.keepAlive,
-      keyPath: args.privateKey,
-      port: args.Port,
-      protocol: args.Protocol,
-      region: args.region
+      caPath: args[ 'ca-certificate' ],
+      certPath: args[ 'client-certificate' ],
+      clientId: args[ 'client-id' ],
+      host: args[ 'host-name' ],
+      keyPath: args[ 'private-key' ],
+      region: 'us-east-1'
     });
 
     this._subscribe( device );
