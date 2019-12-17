@@ -6,6 +6,7 @@ class Raptor {
     var args = {};
     argv.forEach( ( arg ) => {
       var [ prop, val ] = arg.split( '=' );
+      prop = prop.slice( 2 );
 
       args[ prop ] = val;
     });
