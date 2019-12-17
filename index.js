@@ -32,9 +32,11 @@ class Raptor {
   }
 
   _subscribe( device ) {
+    device.subscribe( 'topic_1' );
+    
     device.on( 'connect', () => {
       console.log( 'connect' );
-      device.subscribe( 'led' );
+      device.subscribe( 'topic_1' );
     });
 
     device.on( 'close', () => {
