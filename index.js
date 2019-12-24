@@ -44,6 +44,7 @@ class Raptor {
 
     setInterval( function() {
       rpio.write(16, rpio.LOW);
+      console.log( rpio.read( 16 ) );
     });
 
     /*
