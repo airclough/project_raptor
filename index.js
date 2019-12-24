@@ -3,13 +3,11 @@ var rpio = require( 'rpio' );
 
 class Raptor {
   constructor( argv ) {
-    rpio.open( 2, rpio.OUTPUT, rpio.LOW );
-    rpio.write( 2, rpio.HIGH );
-
     console.log( rpio.read( 2 ) );
 
     setTimeout( function() {
-      rpio.write( 2, rpio.LOW );
+      rpio.open( 2, rpio.OUTPUT, rpio.LOW );
+      rpio.write( 2, rpio.HIGH );
     }, 5000 );
 
     // var args = {};
