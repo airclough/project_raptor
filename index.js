@@ -3,25 +3,34 @@ var rpio = require( 'rpio' );
 
 class Raptor {
   constructor( argv ) {
-    var args = {};
-    argv.forEach( ( arg ) => {
-      var [ prop, val ] = arg.split( '=' );
-      prop = prop.slice( 2 );
+    rpio.open( 2, rpio.OUTPUT, rpio.LOW );
+    rpio.write( 2, rpio.HIGH );
 
-      args[ prop ] = val;
-    });
+    console.log( rpio.read( 2 ) );
 
-    console.log( args );
+    setTimeout( function() {
+      rpio.write( 2, rpio.LOW );
+    }, 5000 );
 
-    var device = this.device = awsIot.device({
-      caPath: `./${args[ 'ca-certificate' ]}`,
-      certPath: `./${args[ 'client-certificate' ]}`,
-      clientId: args[ 'client-id' ],
-      host: args[ 'host-name' ],
-      keyPath: `./${args[ 'private-key' ]}`,
-    });
-
-    this._subscribe( device );
+    // var args = {};
+    // argv.forEach( ( arg ) => {
+    //   var [ prop, val ] = arg.split( '=' );
+    //   prop = prop.slice( 2 );
+    //
+    //   args[ prop ] = val;
+    // });
+    //
+    // console.log( args );
+    //
+    // var device = this.device = awsIot.device({
+    //   caPath: `./${args[ 'ca-certificate' ]}`,
+    //   certPath: `./${args[ 'client-certificate' ]}`,
+    //   clientId: args[ 'client-id' ],
+    //   host: args[ 'host-name' ],
+    //   keyPath: `./${args[ 'private-key' ]}`,
+    // });
+    //
+    // this._subscribe( device );
   }
 
   _subscribe( device ) {
