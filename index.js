@@ -42,9 +42,16 @@ class Raptor {
      */
     rpio.open(16, rpio.OUTPUT, rpio.LOW);
     rpio.write(16, rpio.LOW);
+    console.log( rpio.read(16) );
 
     setTimeout(  function() {
       rpio.write(16, rpio.HIGH);
+      console.log( rpio.read(16) );
+
+      setTimeout(  function() {
+        rpio.write(16, rpio.LOW);
+        console.log( rpio.read(16) );
+      }, 5000 );
     }, 5000 );
 
     /*
