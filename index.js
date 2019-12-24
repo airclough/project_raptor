@@ -41,10 +41,10 @@ class Raptor {
      * being actived, so is safe for devices which require a stable setup.
      */
     rpio.open(16, rpio.OUTPUT, rpio.LOW);
-    rpio.write(16, rpio.HIGH);
+    rpio.write(16, rpio.LOW);
 
-    setTimeout( function() {
-      rpio.write(16, rpio.LOW);
+    setTimeout(  function() {
+      rpio.write(16, rpio.HIGH);
     }, 5000 );
 
     /*
