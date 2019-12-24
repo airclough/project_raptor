@@ -3,14 +3,16 @@ var rpio = require( 'rpio' );
 
 class Raptor {
   constructor( argv ) {
-    rpio.open( 7, rpio.OUTPUT, rpio.LOW );
-    rpio.write( 7, rpio.HIGH );
-
-    console.log( rpio.read( 2 ) );
-
-    setTimeout( function() {
-      rpio.write( 7, rpio.LOW );
-    }, 5000 );
+    this.blink();
+    // console.log( rpio );
+    // rpio.open( 7, rpio.OUTPUT, rpio.LOW );
+    // rpio.write( 7, rpio.HIGH );
+    //
+    // console.log( rpio.read( 2 ) );
+    //
+    // setTimeout( function() {
+    //   rpio.write( 7, rpio.LOW );
+    // }, 5000 );
 
     // var args = {};
     // argv.forEach( ( arg ) => {
@@ -31,6 +33,29 @@ class Raptor {
     // });
     //
     // this._subscribe( device );
+  }
+
+  blink() {
+    /*
+     * Set the initial state to low.  The state is set prior to the pin
+     * being actived, so is safe for devices which require a stable setup.
+     */
+    rpio.open(16, rpio.OUTPUT, rpio.LOW);
+
+    /*
+     * The sleep functions block, but rarely in these simple programs does
+     * one care about that.  Use a setInterval()/setTimeout() loop instead
+     * if it matters.
+     */
+    for (var i = 0; i < 5; i++) {
+            /* On for 1 second */
+            rpio.write(16, rpio.HIGH);
+            rpio.sleep(1);
+     
+            /* Off for half a second (500ms) */
+            rpio.write(16, rpio.LOW);
+            rpio.msleep(500);
+    }
   }
 
   _subscribe( device ) {
