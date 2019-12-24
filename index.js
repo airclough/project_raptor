@@ -41,7 +41,10 @@ class Raptor {
      * being actived, so is safe for devices which require a stable setup.
      */
     rpio.open(16, rpio.OUTPUT, rpio.LOW);
-    rpio.write(16, rpio.LOW);
+
+    setInterval( function() {
+      rpio.write(16, rpio.LOW);
+    });
 
     /*
      * The sleep functions block, but rarely in these simple programs does
