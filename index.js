@@ -1,73 +1,33 @@
-var awsIot = require( 'aws-iot-device-sdk' );
-var rpio = require( 'rpio' );
+const awsIot = require( 'aws-iot-device-sdk' );
+const { Gpio } = require( 'onoff' );
 
 class Raptor {
   constructor( argv ) {
-    this.blink();
-    // console.log( rpio );
-    // rpio.open( 7, rpio.OUTPUT, rpio.LOW );
-    // rpio.write( 7, rpio.HIGH );
-    //
-    // console.log( rpio.read( 2 ) );
-    //
-    // setTimeout( function() {
-    //   rpio.write( 7, rpio.LOW );
-    // }, 5000 );
+    var args = {};
+    argv.forEach( ( arg ) => {
+      var [ prop, val ] = arg.split( '=' );
+      prop = prop.slice( 2 );
 
-    // var args = {};
-    // argv.forEach( ( arg ) => {
-    //   var [ prop, val ] = arg.split( '=' );
-    //   prop = prop.slice( 2 );
-    //
-    //   args[ prop ] = val;
-    // });
-    //
-    // console.log( args );
-    //
-    // var device = this.device = awsIot.device({
-    //   caPath: `./${args[ 'ca-certificate' ]}`,
-    //   certPath: `./${args[ 'client-certificate' ]}`,
-    //   clientId: args[ 'client-id' ],
-    //   host: args[ 'host-name' ],
-    //   keyPath: `./${args[ 'private-key' ]}`,
-    // });
-    //
-    // this._subscribe( device );
+      args[ prop ] = val;
+    });
+
+    console.log( args );
+
+    var device = this.device = awsIot.device({
+      caPath: `./${args[ 'ca-certificate' ]}`,
+      certPath: `./${args[ 'client-certificate' ]}`,
+      clientId: args[ 'client-id' ],
+      host: args[ 'host-name' ],
+      keyPath: `./${args[ 'private-key' ]}`,
+    });
+
+    this._gpio()
+      ._subscribe( device );
   }
 
-  blink() {
-    /*
-     * Set the initial state to low.  The state is set prior to the pin
-     * being actived, so is safe for devices which require a stable setup.
-     */
-    rpio.open(16, rpio.OUTPUT, rpio.LOW);
-    rpio.write(16, rpio.LOW);
-    console.log( rpio.read(16) );
-
-    setTimeout(  function() {
-      rpio.write(16, rpio.HIGH);
-      console.log( rpio.read(16) );
-
-      setTimeout(  function() {
-        rpio.write(16, rpio.LOW);
-        console.log( rpio.read(16) );
-      }, 5000 );
-    }, 5000 );
-
-    /*
-     * The sleep functions block, but rarely in these simple programs does
-     * one care about that.  Use a setInterval()/setTimeout() loop instead
-     * if it matters.
-     */
-    // for (var i = 0; i < 5; i++) {
-    //         /* On for 1 second */
-    //         rpio.write(16, rpio.HIGH);
-    //         rpio.sleep(1);
-    //
-    //         /* Off for half a second (500ms) */
-    //         rpio.write(16, rpio.LOW);
-    //         rpio.msleep(500);
-    // }
+  _gpio() {
+    this.gpioZero = new Gpio( '0', 'out' );
+    return this;
   }
 
   _subscribe( device ) {
@@ -95,10 +55,17 @@ class Raptor {
     device.on( 'message', ( topic, payload ) => {
       console.log( 'message', topic, payload.toString() );
 
+      this.gpioZero.writeSync( 1 );
+      setTimeout( () => {
+        this.gpioZero.writeSync( 0 );
+      }, 5000 );
+
       device.publish( 'topic', JSON.stringify({
         'success': true
       }));
     });
+
+    return this;
   }
 }
 
