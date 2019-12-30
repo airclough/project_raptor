@@ -27,7 +27,13 @@ class Raptor {
 
   _gpio() {
     this.gpioZero = new Gpio( '11', 'out' );
-    this.gpioZero.writeSync( 1 );
+    this.locked = false;
+
+    setInterval( () => {
+      this.gpioZero.writeSync( this.locked ? 0 : 1 );
+      this.locked = !this.locked;
+    }, 5000 );
+
     return this;
   }
 
