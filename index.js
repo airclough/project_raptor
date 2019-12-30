@@ -27,12 +27,6 @@ class Raptor {
 
   _gpio() {
     this.gpioZero = new Gpio( '17', 'out' );
-    this.locked = false;
-
-    setInterval( () => {
-      this.gpioZero.writeSync( this.locked ? 0 : 1 );
-      this.locked = !this.locked;
-    }, 5000 );
 
     return this;
   }
@@ -62,6 +56,7 @@ class Raptor {
     device.on( 'message', ( topic, payload ) => {
       console.log( 'message', topic, payload.toString() );
 
+      this.gpioZero.writeSync( 1 );
       setTimeout( () => {
         this.gpioZero.writeSync( 0 );
       }, 5000 );
