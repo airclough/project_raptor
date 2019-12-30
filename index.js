@@ -26,7 +26,7 @@ class Raptor {
   }
 
   _gpio() {
-    this.gpioZero = new Gpio( '11', 'out' );
+    this.gpioZero = new Gpio( '17', 'out' );
     this.locked = false;
 
     setInterval( () => {
