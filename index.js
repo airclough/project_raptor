@@ -13,6 +13,7 @@ class Raptor {
 
     console.log( args );
 
+    this.name = 'PI4';
     var device = this.device = awsIot.device({
       caPath: `./${args[ 'ca-certificate' ]}`,
       certPath: `./${args[ 'client-certificate' ]}`,
@@ -22,7 +23,8 @@ class Raptor {
     });
 
     this._gpio()
-      ._subscribe( device );
+      ._subscribe( device )
+      ._report();
   }
 
   _gpio() {
@@ -60,13 +62,24 @@ class Raptor {
       setTimeout( () => {
         this.gpioZero.writeSync( 0 );
       }, 5000 );
-
-      device.publish( 'topic', JSON.stringify({
-        'success': true
-      }));
     });
 
     return this;
+  }
+
+  _report() {
+    setInterval( () => {
+      device.publish(
+        '$aws/things/' + this.name + '/shadow/update',
+        JSON.stringify({
+          'state': {
+            'reported': {
+              'timestamp': Date.now()
+            }
+          }
+        })
+      );
+    }, 5000 );
   }
 }
 
